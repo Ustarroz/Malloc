@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Thu Jan 26 15:30:02 2017 voyevoda
+** Last update Thu Jan 26 15:46:15 2017 voyevoda
 */
 
 #include <unistd.h>
@@ -23,6 +23,11 @@ void	free(void *ptr)
 }
 
 void	*realloc(void *ptr, size_t size)
+{
+
+}
+
+void	show_alloc_mem()
 {
 
 }
