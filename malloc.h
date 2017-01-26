@@ -5,7 +5,7 @@
 // Login   <voyevoda@epitech.net>
 //
 // Started on  Thu Jan 26 14:42:23 2017 voyevoda
-// Last update Thu Jan 26 15:33:32 2017 voyevoda
+// Last update Thu Jan 26 16:24:29 2017 voyevoda
 //
 
 #ifndef MALLOC_H_
@@ -16,11 +16,12 @@ typedef struct s_metadata
 {
   void			*data;
   struct s_metadata	*next;
+  struct s_metadata	*prev;
   size_t		size;
   bool			free;
-}		metadata;
+}		t_mtadata;
 
-#define METADATA_SIZE sizeof(metadata);
+#define METADATA_SIZE sizeof(t_metadata);
 
 void	*malloc(size_t size);
 void	free(void *ptr);
