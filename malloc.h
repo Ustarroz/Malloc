@@ -5,17 +5,18 @@
 // Login   <voyevoda@epitech.net>
 //
 // Started on  Thu Jan 26 14:42:23 2017 voyevoda
-// Last update Thu Jan 26 15:07:39 2017 voyevoda
+// Last update Thu Jan 26 15:33:32 2017 voyevoda
 //
 
 #ifndef MALLOC_H_
 # define MALLOC_H_
 
+#include <stdbool.h>
 typedef struct s_metadata
 {
   void			*data;
   struct s_metadata	*next;
-  s_size		size;
+  size_t		size;
   bool			free;
 }		metadata;
 
