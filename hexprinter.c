@@ -5,12 +5,12 @@
 ** Login   <puilla_e@epitech.net>
 **
 ** Started on  Fri Jan 27 13:42:04 2017 Edouard Puillandre
-** Last update Fri Jan 27 13:42:05 2017 Edouard Puillandre
+** Last update Fri Jan 27 13:49:28 2017 Edouard Puillandre
 */
 
 #include <unistd.h>
 
-void printnbhex_rec(unsigned long ptr)
+static void printnbhex_rec(unsigned long ptr)
 {
   char c;
   if (ptr == 0)
