@@ -2,7 +2,7 @@ CC	= gcc
 
 RM	= rm -f
 
-CFLAGS	+= -W -Wall -Wextra -Werror -fpic -g
+CFLAGS	+= -W -Wall -Wextra -Werror -fpic
 CFLAGS	+=
 
 LFLAGS	+=
