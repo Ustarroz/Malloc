@@ -5,13 +5,14 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Fri Jan 27 14:09:12 2017 voyevoda
+** Last update Fri Jan 27 14:16:51 2017 voyevoda
 */
 
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
 #include "malloc.h"
+#include "hexprinter.h"
 
 static t_metadata	*list = NULL;
 
@@ -186,7 +187,7 @@ void	show_alloc_mem()
 {
   t_metadata *tmp;
 
-  write(1, "break : ", 8);
+  my_putstr("break : ");
   printnbhex(sbrk(0));
   write (1, "\n", 1);
   if (list == NULL)
@@ -197,10 +198,10 @@ void	show_alloc_mem()
       if (tmp->free == false)
 	{
 	  printnbhex(tmp->data);
-	  write(1, " - ", 3);
-	  printnbhex(tm->data + tmp->size);
-	  write(1, " : ", 3);
-	  printnbhex(tmp->size);
+	  my_putstr(" - ");
+	  printnbhex(tmp->data + tmp->size);
+	  my_putstr(" : ");
+	  printnbdec(tmp->size);
 	  write(1, "\n", 1);
 	  /* printf("%#lX - %#lX : %lu bytes\n", (unsigned long)tmp->data, */
 	  /* 	 (unsigned long)(tmp->data + tmp->size), tmp->size); */
