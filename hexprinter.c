@@ -5,15 +5,16 @@
 ** Login   <puilla_e@epitech.net>
 **
 ** Started on  Fri Jan 27 13:42:04 2017 Edouard Puillandre
-** Last update Fri Jan 27 14:11:47 2017 Edouard Puillandre
+** Last update Fri Jan 27 17:21:36 2017 Edouard Puillandre
 */
 
 #include <unistd.h>
 #include <string.h>
 
-static void printnbhex_rec(unsigned long ptr)
+static void	printnbhex_rec(unsigned long ptr)
 {
-  char c;
+  char		c;
+
   if (ptr == 0)
     return ;
   printnbhex_rec(ptr / 16);
@@ -25,7 +26,7 @@ static void printnbhex_rec(unsigned long ptr)
   write(1, &c, 1);
 }
 
-void printnbhex(void *ptr)
+void	printnbhex(void *ptr)
 {
   if (ptr == 0)
     {
@@ -36,9 +37,10 @@ void printnbhex(void *ptr)
   printnbhex_rec((unsigned long) ptr);
 }
 
-void printnbdec(unsigned long ptr)
+void	printnbdec(unsigned long ptr)
 {
-  char c;
+  char	c;
+
   if (ptr < 10)
     {
       c = ptr + '0';
@@ -50,7 +52,7 @@ void printnbdec(unsigned long ptr)
   write(1, &c, 1);
 }
 
-void my_putstr(char *str)
+void	my_putstr(char *str)
 {
   write(1, str, strlen(str));
 }

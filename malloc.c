@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Fri Jan 27 16:58:31 2017 voyevoda
+** Last update Fri Jan 27 17:24:32 2017 Edouard Puillandre
 */
 
 #include <stdio.h>
@@ -36,7 +36,7 @@ t_metadata	*add_first(size_t size)
   return (tmp);
 }
 
-void	*malloc(size_t size)
+void		*malloc(size_t size)
 {
   t_metadata	*tmp;
 
@@ -63,14 +63,14 @@ t_metadata	*merge_free(t_metadata *tmp)
   return (tmp);
 }
 
-void	free(void *ptr)
+void		free(void *ptr)
 {
   t_metadata	*tmp;
   unsigned int	pages;
 
   pages = getpagesize();
   if (ptr == NULL)
-    return;
+    return ;
   tmp = ptr - METADATA_SIZE;
   tmp->free = true;
   if (tmp->next != NULL && tmp->next->free == true)
@@ -91,15 +91,15 @@ void	free(void *ptr)
     }
 }
 
-void	show_alloc_mem()
+void		show_alloc_mem(void)
 {
-  t_metadata *tmp;
+  t_metadata	*tmp;
 
   my_putstr("break : ");
   printnbhex(sbrk(0));
   write (1, "\n", 1);
   if (list == NULL)
-    return;
+    return ;
   tmp = list;
   while (tmp != NULL)
     {
