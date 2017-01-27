@@ -1,12 +1,12 @@
-//
-// malloc.h for bonjour in /home/voyevoda/rendu/systeme_unix/PSU_2016_malloc
-//
-// Made by voyevoda
-// Login   <voyevoda@epitech.net>
-//
-// Started on  Thu Jan 26 14:42:23 2017 voyevoda
-// Last update Fri Jan 27 11:36:07 2017 voyevoda
-//
+/*
+** malloc.h for malloc in /home/puilla_e/semestre4/psu/PSU_2016_malloc
+**
+** Made by Edouard Puillandre
+** Login   <puilla_e@epitech.net>
+**
+** Started on  Fri Jan 27 12:26:11 2017 Edouard Puillandre
+** Last update Fri Jan 27 12:26:12 2017 Edouard Puillandre
+*/
 
 #ifndef MALLOC_H_
 # define MALLOC_H_
@@ -26,4 +26,5 @@ typedef struct s_metadata
 void	*malloc(size_t size);
 void	free(void *ptr);
 void	*realloc(void *ptr, size_t size);
+void	show_alloc_mem();
 # endif /* ! MALLOC_H_ */
