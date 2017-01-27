@@ -5,12 +5,14 @@
 ** Login   <puilla_e@epitech.net>
 **
 ** Started on  Fri Jan 27 12:26:11 2017 Edouard Puillandre
-** Last update Fri Jan 27 13:40:26 2017 Edouard Puillandre
+** Last update Fri Jan 27 14:09:30 2017 Edouard Puillandre
 */
 
 #ifndef HEXPRINTER_H_
 # define HEXPRINTER_H_
 
-void	hexprinter(void *ptr);
+void	printnbhex(void *ptr);
+void	printnbdec(unsigned long nb);
+void	my_putstr(char *str);
 
 # endif /* ! HEXPRINTER_H_ */
