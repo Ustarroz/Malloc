@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Fri Jan 27 14:16:51 2017 voyevoda
+** Last update Fri Jan 27 16:30:16 2017 voyevoda
 */
 
 #include <stdio.h>
@@ -126,8 +126,10 @@ t_metadata	*merge_free(t_metadata *tmp)
 
 void	free(void *ptr)
 {
-  t_metadata *tmp;
+  t_metadata	*tmp;
+  unsigned int	pages;
 
+  pages = getpagesize();
   if (ptr == NULL)
     return;
   tmp = ptr - METADATA_SIZE;
@@ -138,11 +140,18 @@ void	free(void *ptr)
     tmp = merge_free(tmp->prev);
   if (tmp->next == NULL)
     {
-      sbrk(-tmp->size - METADATA_SIZE);
-      if (tmp->prev != NULL)
-	tmp->prev->next = NULL;
-      else
-	list = NULL;
+      if (ptr == list)
+	{
+	  sbrk(-(tmp->size + METADATA_SIZE));
+	  list = NULL;
+	}
+      else if (((void *)tmp - (void *)list) / pages <
+	       (tmp->data + tmp->size - (void *)list) / pages)
+	{
+	  tmp->prev->next = NULL;
+	  sbrk((((void *)tmp - (void *)list) /
+		pages + 1 - (sbrk(0) - (void *)list) / pages) * pages);
+	}
     }
 }
 
