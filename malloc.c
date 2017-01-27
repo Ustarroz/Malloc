@@ -5,11 +5,12 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Thu Jan 26 22:59:27 2017 voyevoda
+** Last update Fri Jan 27 11:43:49 2017 voyevoda
 */
 
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 #include "malloc.h"
 
 static t_metadata	*list = NULL;
@@ -58,7 +59,7 @@ t_metadata	*add_in_list(size_t size)
 	  if (node.size - tmp->size >= METADATA_SIZE)
 	    {
 	      var = tmp->data + tmp->size;
-	      var->size = node->size - tmp->size - METADATA_SIZE;
+	      var->size = node.size - tmp->size - METADATA_SIZE;
 	      var->next = tmp->next;
 	      var->prev = tmp;
 	      var->free = true;
@@ -73,7 +74,7 @@ t_metadata	*add_in_list(size_t size)
   return (add_last(size, tmp));
 }
 
-void	add_first(size_t size)
+t_metadata	*add_first(size_t size)
 {
   t_metadata	*tmp;
   int		pages;
@@ -90,20 +91,18 @@ void	add_first(size_t size)
   tmp->free = false;
   tmp->data = (void *)tmp + METADATA_SIZE;
   list = tmp;
+  return (tmp);
 }
 
 void	*malloc(size_t size)
 {
   t_metadata	*tmp;
 
-  tmp = list;
-  while(tmp != NULL)
-    tmp = tmp->next;
-  if (tmp == NULL)
-    add_first(size);
-
-
-  return tmp + METADATA_SIZE;
+  if (list == NULL)
+    tmp = add_first(size);
+  else
+    tmp = add_in_list(size);
+  return tmp->data;
 }
 
 t_metadata	*merge_free(t_metadata *tmp)
@@ -142,21 +141,54 @@ void	free(void *ptr)
 
 void	*realloc(void *ptr, size_t size)
 {
+  void		*cpy;
+  t_metadata	node;
+  t_metadata	*tmp;
+  t_metadata	*var;
 
+  if (ptr == NULL)
+    return malloc(size);
+  tmp = ptr - METADATA_SIZE;
+  tmp->free = false;
+  if (tmp->size == size)
+    return (ptr);
+  if (tmp->size < size)
+    {
+      cpy = malloc(size);
+      memcpy(cpy, ptr, tmp->size);
+      free(ptr);
+      return (cpy);
+    }
+  node = *tmp;
+  tmp->size = size;
+  if (node.size - tmp->size >= METADATA_SIZE)
+    {
+      var = tmp->data + tmp->size;
+      var->size = node.size - tmp->size - METADATA_SIZE;
+      var->next = tmp->next;
+      var->prev = tmp;
+      var->free = true;
+      var->data = (void *) var + METADATA_SIZE;
+      if (tmp->next != NULL)
+	tmp->next->prev = var;
+      tmp->next = var;
+    }
+  return (tmp->data);
 }
 
 void	show_alloc_mem()
 {
   t_metadata *tmp;
 
-  printf("break : %#X\n", sbrk(0));
+  printf("break : %#lX\n", (unsigned long)sbrk(0));
   if (list == NULL)
     return;
   tmp = list;
   while (tmp != NULL)
     {
       if (tmp->free ==false)
-	printf("%#X - %#X : %d bytes\n",tmp->data, tmp->data + tmp->size, tmp->size);
+	printf("%#lX - %#lX : %lu bytes\n", (unsigned long)tmp->data,
+	       (unsigned long)(tmp->data + tmp->size), tmp->size);
       tmp = tmp->next;
     }
 }
