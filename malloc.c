@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Fri Jan 27 11:43:49 2017 voyevoda
+** Last update Fri Jan 27 14:09:12 2017 voyevoda
 */
 
 #include <stdio.h>
@@ -29,7 +29,8 @@ t_metadata	*add_last(size_t size, t_metadata *lastnode)
       nb = (size - stock + METADATA_SIZE) / pages;
       if ((size - stock + METADATA_SIZE) % pages != 0)
 	++nb;
-      sbrk(pages * nb);
+      if (sbrk(pages * nb) == (void *)-1)
+	return (NULL);
     }
   tmp = lastnode->data + lastnode->size;
   tmp->size = size;
@@ -71,7 +72,7 @@ t_metadata	*add_in_list(size_t size)
 	}
       tmp = tmp->next;
     }
-  return (add_last(size, tmp));
+  return add_last(size, tmp);
 }
 
 t_metadata	*add_first(size_t size)
@@ -80,11 +81,12 @@ t_metadata	*add_first(size_t size)
   int		pages;
   int		nb;
 
-   pages = getpagesize();
+  pages = getpagesize();
   nb = (size + METADATA_SIZE) / pages;
   if ((size + METADATA_SIZE) % pages != 0)
     ++nb;
-  tmp = sbrk(nb * pages);
+  if ((tmp = sbrk(nb * pages)) == NULL)
+    return (NULL);
   tmp->next = NULL;
   tmp->prev = NULL;
   tmp->size = size;
@@ -99,9 +101,13 @@ void	*malloc(size_t size)
   t_metadata	*tmp;
 
   if (list == NULL)
-    tmp = add_first(size);
+    {
+      if ((tmp = add_first(size)) == NULL)
+	return (NULL);
+    }
   else
-    tmp = add_in_list(size);
+    if ((tmp = add_in_list(size)) == NULL)
+      return (NULL);
   return tmp->data;
 }
 
@@ -180,15 +186,25 @@ void	show_alloc_mem()
 {
   t_metadata *tmp;
 
-  printf("break : %#lX\n", (unsigned long)sbrk(0));
+  write(1, "break : ", 8);
+  printnbhex(sbrk(0));
+  write (1, "\n", 1);
   if (list == NULL)
     return;
   tmp = list;
   while (tmp != NULL)
     {
-      if (tmp->free ==false)
-	printf("%#lX - %#lX : %lu bytes\n", (unsigned long)tmp->data,
-	       (unsigned long)(tmp->data + tmp->size), tmp->size);
+      if (tmp->free == false)
+	{
+	  printnbhex(tmp->data);
+	  write(1, " - ", 3);
+	  printnbhex(tm->data + tmp->size);
+	  write(1, " : ", 3);
+	  printnbhex(tmp->size);
+	  write(1, "\n", 1);
+	  /* printf("%#lX - %#lX : %lu bytes\n", (unsigned long)tmp->data, */
+	  /* 	 (unsigned long)(tmp->data + tmp->size), tmp->size); */
+	}
       tmp = tmp->next;
     }
 }
