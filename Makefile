@@ -9,7 +9,7 @@ LFLAGS	+=
 
 LIBNAME	= libmy_malloc.so
 
-LIBSRC	= malloc.c
+LIBSRC	= malloc.c hexprinter.c
 
 LIBOBJ	= $(LIBSRC:.c=.o)
 
