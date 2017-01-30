@@ -5,62 +5,68 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Fri Jan 27 17:24:32 2017 Edouard Puillandre
+** Last update Mon Jan 30 13:45:45 2017 voyevoda
 */
 
+#include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 #include "malloc.h"
 #include "hexprinter.h"
 
 static t_metadata	*list = NULL;
+static pthread_mutex_t	mutex = PTHREAD_MUTEX_INITIALIZER;
 
-t_metadata	*add_first(size_t size)
+void    *realloc(void *ptr, size_t size)
 {
-  t_metadata	*tmp;
-  int		pages;
-  int		nb;
+  void          *cpy;
+  t_metadata    node;
+  t_metadata    *tmp;
 
-  pages = getpagesize();
-  nb = (size + METADATA_SIZE) / pages;
-  if ((size + METADATA_SIZE) % pages != 0)
-    ++nb;
-  if ((tmp = sbrk(nb * pages)) == NULL)
-    return (NULL);
-  tmp->next = NULL;
-  tmp->prev = NULL;
-  tmp->size = size;
+  if (ptr == NULL)
+    return malloc(size);
+  tmp = ptr - METADATA_SIZE;
+  if (tmp->size == size)
+    return (ptr);
+  if (tmp->size < size)
+    {
+      cpy = malloc(size);
+      memcpy(cpy, ptr, tmp->size);
+      free(ptr);
+      return (cpy);
+    }
+  pthread_mutex_lock(&mutex);
   tmp->free = false;
-  tmp->data = (void *)tmp + METADATA_SIZE;
-  list = tmp;
-  return (tmp);
+  node = *tmp;
+  tmp->size = size;
+  if (node.size - tmp->size >= METADATA_SIZE)
+    set_mem(tmp, &node);
+  pthread_mutex_unlock(&mutex);
+  return (tmp->data);
 }
 
 void		*malloc(size_t size)
 {
   t_metadata	*tmp;
 
+  pthread_mutex_lock(&mutex);
   if (list == NULL)
     {
-      if ((tmp = add_first(size)) == NULL)
+      if ((tmp = add_first(size, &list)) == NULL)
+	{
+	  pthread_mutex_unlock(&mutex);
 	return (NULL);
+	}
     }
   else
     if ((tmp = add_in_list(size, list)) == NULL)
-      return (NULL);
+      {
+	pthread_mutex_unlock(&mutex);
+	return (NULL);
+      }
+  pthread_mutex_unlock(&mutex);
   return tmp->data;
-}
-
-t_metadata	*merge_free(t_metadata *tmp)
-{
-  t_metadata	*node;
-
-  node = tmp->next;
-  tmp->size += node->size + METADATA_SIZE;
-  tmp->next = node->next;
-  if (node->next != NULL)
-    node->next->prev = tmp;
-  return (tmp);
 }
 
 void		free(void *ptr)
@@ -69,9 +75,9 @@ void		free(void *ptr)
   unsigned int	pages;
 
   pages = getpagesize();
-  if (ptr == NULL)
-    return ;
-  tmp = ptr - METADATA_SIZE;
+  if ((tmp = ptr_to_metadata(ptr, list)) == NULL)
+    return;
+  pthread_mutex_lock(&mutex);
   tmp->free = true;
   if (tmp->next != NULL && tmp->next->free == true)
     tmp = merge_free(tmp);
@@ -89,6 +95,7 @@ void		free(void *ptr)
       sbrk((((void *)tmp - (void *)list) /
 	    pages + 1 - (sbrk(0) - (void *)list) / pages) * pages);
     }
+  pthread_mutex_unlock(&mutex);
 }
 
 void		show_alloc_mem(void)
