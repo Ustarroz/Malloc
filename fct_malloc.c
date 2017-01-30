@@ -5,13 +5,24 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Fri Jan 27 16:49:24 2017 voyevoda
-** Last update Fri Jan 27 17:15:34 2017 voyevoda
+** Last update Mon Jan 30 13:34:10 2017 voyevoda
 */
 #include <string.h>
+#include <pthread.h>
 #include <unistd.h>
 #include "malloc.h"
 
-static void	set_mem(t_metadata *tmp, t_metadata *node)
+void	*calloc(size_t nmenb, size_t size)
+{
+  void	*tmp;
+
+  if ((tmp = malloc(size * nmenb)) == NULL)
+    return (NULL);
+  memset(tmp, 0, size * nmenb);
+  return (tmp);
+}
+
+void	set_mem(t_metadata *tmp, t_metadata *node)
 {
   t_metadata    *var;
 
@@ -24,32 +35,6 @@ static void	set_mem(t_metadata *tmp, t_metadata *node)
   if (tmp->next != NULL)
     tmp->next->prev = var;
   tmp->next = var;
-}
-
-void    *realloc(void *ptr, size_t size)
-{
-  void          *cpy;
-  t_metadata    node;
-  t_metadata    *tmp;
-
-  if (ptr == NULL)
-    return malloc(size);
-  tmp = ptr - METADATA_SIZE;
-  tmp->free = false;
-  if (tmp->size == size)
-    return (ptr);
-  if (tmp->size < size)
-    {
-      cpy = malloc(size);
-      memcpy(cpy, ptr, tmp->size);
-      free(ptr);
-      return (cpy);
-    }
-  node = *tmp;
-  tmp->size = size;
-  if (node.size - tmp->size >= METADATA_SIZE)
-    set_mem(tmp, &node);
-  return (tmp->data);
 }
 
 static t_metadata      *add_last(size_t size, t_metadata *lastnode)
@@ -100,4 +85,25 @@ t_metadata      *add_in_list(size_t size, t_metadata *list)
       tmp = tmp->next;
     }
   return add_last(size, tmp);
+}
+
+t_metadata      *add_first(size_t size, t_metadata **list)
+{
+  t_metadata    *tmp;
+  int           pages;
+  int           nb;
+
+  pages = getpagesize();
+  nb = (size + METADATA_SIZE) / pages;
+  if ((size + METADATA_SIZE) % pages != 0)
+    ++nb;
+  if ((tmp = sbrk(nb * pages)) == NULL)
+    return (NULL);
+  tmp->next = NULL;
+  tmp->prev = NULL;
+  tmp->size = size;
+  tmp->free = false;
+  tmp->data = (void *)tmp + METADATA_SIZE;
+  *list = tmp;
+  return (tmp);
 }
