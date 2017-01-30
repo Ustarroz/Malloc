@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Mon Jan 30 13:45:45 2017 voyevoda
+** Last update Mon Jan 30 13:56:07 2017 Edouard Puillandre
 */
 
 #include <pthread.h>
@@ -18,14 +18,14 @@
 static t_metadata	*list = NULL;
 static pthread_mutex_t	mutex = PTHREAD_MUTEX_INITIALIZER;
 
-void    *realloc(void *ptr, size_t size)
+void		*realloc(void *ptr, size_t size)
 {
   void          *cpy;
   t_metadata    node;
   t_metadata    *tmp;
 
   if (ptr == NULL)
-    return malloc(size);
+    return (malloc(size));
   tmp = ptr - METADATA_SIZE;
   if (tmp->size == size)
     return (ptr);
@@ -56,7 +56,7 @@ void		*malloc(size_t size)
       if ((tmp = add_first(size, &list)) == NULL)
 	{
 	  pthread_mutex_unlock(&mutex);
-	return (NULL);
+	  return (NULL);
 	}
     }
   else
@@ -66,7 +66,7 @@ void		*malloc(size_t size)
 	return (NULL);
       }
   pthread_mutex_unlock(&mutex);
-  return tmp->data;
+  return (tmp->data);
 }
 
 void		free(void *ptr)
@@ -76,7 +76,7 @@ void		free(void *ptr)
 
   pages = getpagesize();
   if ((tmp = ptr_to_metadata(ptr, list)) == NULL)
-    return;
+    return ;
   pthread_mutex_lock(&mutex);
   tmp->free = true;
   if (tmp->next != NULL && tmp->next->free == true)

@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Mon Jan 30 13:22:59 2017 voyevoda
-** Last update Mon Jan 30 13:45:12 2017 voyevoda
+** Last update Mon Jan 30 13:52:06 2017 Edouard Puillandre
 */
 
 #include "malloc.h"
@@ -22,7 +22,7 @@ t_metadata      *merge_free(t_metadata *tmp)
   return (tmp);
 }
 
-t_metadata		*ptr_to_metadata(void *ptr, t_metadata *list)
+t_metadata	*ptr_to_metadata(void *ptr, t_metadata *list)
 {
   t_metadata	*tmp;
 

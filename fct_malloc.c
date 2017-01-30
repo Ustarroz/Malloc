@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Fri Jan 27 16:49:24 2017 voyevoda
-** Last update Mon Jan 30 13:34:10 2017 voyevoda
+** Last update Mon Jan 30 13:54:33 2017 Edouard Puillandre
 */
 #include <string.h>
 #include <pthread.h>
@@ -22,7 +22,7 @@ void	*calloc(size_t nmenb, size_t size)
   return (tmp);
 }
 
-void	set_mem(t_metadata *tmp, t_metadata *node)
+void		set_mem(t_metadata *tmp, t_metadata *node)
 {
   t_metadata    *var;
 
@@ -37,12 +37,12 @@ void	set_mem(t_metadata *tmp, t_metadata *node)
   tmp->next = var;
 }
 
-static t_metadata      *add_last(size_t size, t_metadata *lastnode)
+static t_metadata	*add_last(size_t size, t_metadata *lastnode)
 {
-  t_metadata    *tmp;
-  size_t        stock;
-  int           pages;
-  int           nb;
+  t_metadata		*tmp;
+  size_t		stock;
+  int			pages;
+  int			nb;
 
   stock = sbrk(0) - (lastnode->data + lastnode->size);
   if (stock < METADATA_SIZE + size)
@@ -64,10 +64,10 @@ static t_metadata      *add_last(size_t size, t_metadata *lastnode)
   return (tmp);
 }
 
-t_metadata      *add_in_list(size_t size, t_metadata *list)
+t_metadata	*add_in_list(size_t size, t_metadata *list)
 {
-  t_metadata *tmp;
-  t_metadata  node;
+  t_metadata	*tmp;
+  t_metadata	node;
 
   tmp = list;
   while (tmp->next != NULL)
@@ -84,7 +84,7 @@ t_metadata      *add_in_list(size_t size, t_metadata *list)
 	}
       tmp = tmp->next;
     }
-  return add_last(size, tmp);
+  return (add_last(size, tmp));
 }
 
 t_metadata      *add_first(size_t size, t_metadata **list)
