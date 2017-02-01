@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Wed Feb  1 09:59:11 2017 Edouard Puillandre
+** Last update Wed Feb  1 14:01:50 2017 puilla_e
 */
 
 #include <pthread.h>
@@ -26,7 +26,8 @@ void		*realloc(void *ptr, size_t size)
 
   if (ptr == NULL)
     return (malloc(size));
-  tmp = ptr - METADATA_SIZE;
+  if ((tmp = ptr_to_metadata(ptr, list)) == NULL)
+    return (ptr);
   if (tmp->size == size)
     return (ptr);
   if (tmp->size < size)
