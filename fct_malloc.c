@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Fri Jan 27 16:49:24 2017 voyevoda
-** Last update Mon Jan 30 13:54:33 2017 Edouard Puillandre
+** Last update Mon Jan 30 16:04:26 2017 Edouard Puillandre
 */
 #include <string.h>
 #include <pthread.h>

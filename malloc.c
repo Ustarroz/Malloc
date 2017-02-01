@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Mon Jan 30 13:56:07 2017 Edouard Puillandre
+** Last update Wed Feb  1 09:59:11 2017 Edouard Puillandre
 */
 
 #include <pthread.h>
@@ -39,8 +39,8 @@ void		*realloc(void *ptr, size_t size)
   pthread_mutex_lock(&mutex);
   tmp->free = false;
   node = *tmp;
-  tmp->size = size;
-  if (node.size - tmp->size >= METADATA_SIZE)
+  tmp->size = (node.size - size >= METADATA_SIZE) ? size : tmp->size;
+  if (node.size - size >= METADATA_SIZE)
     set_mem(tmp, &node);
   pthread_mutex_unlock(&mutex);
   return (tmp->data);
@@ -49,18 +49,20 @@ void		*realloc(void *ptr, size_t size)
 void		*malloc(size_t size)
 {
   t_metadata	*tmp;
+  size_t	size_pad;
 
+  size_pad = (size - 1) / 8 * 8 + 8;
   pthread_mutex_lock(&mutex);
   if (list == NULL)
     {
-      if ((tmp = add_first(size, &list)) == NULL)
+      if ((tmp = add_first(size_pad, &list)) == NULL)
 	{
 	  pthread_mutex_unlock(&mutex);
 	  return (NULL);
 	}
     }
   else
-    if ((tmp = add_in_list(size, list)) == NULL)
+    if ((tmp = add_in_list(size_pad, list)) == NULL)
       {
 	pthread_mutex_unlock(&mutex);
 	return (NULL);
