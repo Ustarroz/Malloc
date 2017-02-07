@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Wed Feb  1 14:01:50 2017 puilla_e
+** Last update Tue Feb  7 14:21:40 2017 puilla_e
 */
 
 #include <pthread.h>
@@ -86,7 +86,7 @@ void		free(void *ptr)
     tmp = merge_free(tmp);
   if (tmp->prev != NULL && tmp->prev->free == true)
     tmp = merge_free(tmp->prev);
-  if (tmp->next == NULL && ptr == list)
+  if (tmp->next == NULL && tmp == list)
     {
       sbrk(-(tmp->size + METADATA_SIZE));
       list = NULL;
