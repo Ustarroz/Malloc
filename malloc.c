@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Tue Feb  7 16:11:06 2017 puilla_e
+** Last update Tue Feb  7 17:09:56 2017 puilla_e
 */
 
 #include <pthread.h>
@@ -78,7 +78,7 @@ void		free(void *ptr)
   unsigned int	pages;
 
   pages = getpagesize();
-  if ((tmp = ptr_to_metadata(ptr, list)) == NULL)
+  if ((tmp = ptr_to_metadata(ptr, list)) == NULL || tmp->free == true)
     return ;
   pthread_mutex_lock(&mutex);
   tmp->free = true;
