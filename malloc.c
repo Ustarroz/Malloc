@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Tue Feb  7 16:50:17 2017 ustarr_r
+** Last update Tue Feb  7 16:58:13 2017 ustarr_r
 */
 
 #include <pthread.h>
@@ -52,7 +52,7 @@ void		*malloc(size_t size)
   t_metadata	*tmp;
   size_t	size_pad;
 
-  size_pad = (size - 1) / 8 * 8 + 8;
+  size_pad = (size == 0) ? size : (size - 1) / 8 * 8 + 8;
   pthread_mutex_lock(&mutex);
   if (list == NULL)
     {

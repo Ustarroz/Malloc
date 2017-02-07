@@ -5,7 +5,7 @@
 ** Login   <puilla_e@epitech.net>
 **
 ** Started on  Fri Jan 27 12:26:11 2017 Edouard Puillandre
-// Last update Mon Jan 30 13:45:34 2017 voyevoda
+// Last update Tue Feb  7 15:53:46 2017 puilla_e
 */
 
 #ifndef MALLOC_H_
@@ -33,6 +33,6 @@ void		 set_mem(t_metadata *tmp, t_metadata *node);
 void		*calloc(size_t nmenb, size_t size);
 t_metadata      *add_first(size_t size, t_metadata **list);
 t_metadata      *merge_free(t_metadata *tmp);
-t_metadata              *ptr_to_metadata(void *ptr, t_metadata *list);
+t_metadata	*ptr_to_metadata(void *ptr, t_metadata *list);
 
 # endif /* ! MALLOC_H_ */

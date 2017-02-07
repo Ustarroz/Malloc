@@ -5,14 +5,14 @@
 ## Login   <puilla_e@epitech.net>
 ## 
 ## Started on  Mon Jan 30 13:49:30 2017 Edouard Puillandre
-## Last update Mon Jan 30 13:56:47 2017 Edouard Puillandre
+## Last update Tue Feb  7 15:51:19 2017 puilla_e
 ##
 
-CC	= gcc
+CC	= gcc-6
 
 RM	= rm -f
 
-CFLAGS	+= -W -Wall -Wextra -Werror -fpic
+CFLAGS	+= -W -Wall -Wextra -Werror -fpic -g
 CFLAGS	+=
 
 LFLAGS	+= -pthread
