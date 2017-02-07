@@ -5,13 +5,13 @@
 ** Login   <puilla_e@epitech.net>
 **
 ** Started on  Fri Jan 27 13:42:04 2017 Edouard Puillandre
-** Last update Fri Jan 27 17:21:36 2017 Edouard Puillandre
+** Last update Tue Feb  7 18:39:05 2017 puilla_e
 */
 
 #include <unistd.h>
 #include <string.h>
 
-static void	printnbhex_rec(unsigned long ptr)
+static void	printnbhex_rec(size_t ptr)
 {
   char		c;
 
@@ -37,7 +37,7 @@ void	printnbhex(void *ptr)
   printnbhex_rec((unsigned long) ptr);
 }
 
-void	printnbdec(unsigned long ptr)
+void	printnbdec(size_t ptr)
 {
   char	c;
 

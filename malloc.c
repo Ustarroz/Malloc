@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Tue Feb  7 17:09:56 2017 puilla_e
+** Last update Tue Feb  7 20:53:58 2017 puilla_e
 */
 
 #include <pthread.h>
@@ -75,7 +75,7 @@ void		*malloc(size_t size)
 void		free(void *ptr)
 {
   t_metadata	*tmp;
-  unsigned int	pages;
+  size_t	pages;
 
   pages = getpagesize();
   if ((tmp = ptr_to_metadata(ptr, list)) == NULL || tmp->free == true)
@@ -88,7 +88,7 @@ void		free(void *ptr)
     tmp = merge_free(tmp->prev);
   if (tmp->next == NULL && tmp == list)
     {
-      sbrk(-(tmp->size + METADATA_SIZE));
+      sbrk(-(sbrk(0) - (void *) list));
       list = NULL;
     }
   else if (tmp->next == NULL && ((void *) tmp - (void *) list) / pages <

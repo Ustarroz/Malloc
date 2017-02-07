@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Fri Jan 27 16:49:24 2017 voyevoda
-** Last update Mon Jan 30 16:04:26 2017 Edouard Puillandre
+** Last update Tue Feb  7 18:49:59 2017 puilla_e
 */
 #include <string.h>
 #include <pthread.h>
@@ -41,8 +41,8 @@ static t_metadata	*add_last(size_t size, t_metadata *lastnode)
 {
   t_metadata		*tmp;
   size_t		stock;
-  int			pages;
-  int			nb;
+  size_t		pages;
+  size_t		nb;
 
   stock = sbrk(0) - (lastnode->data + lastnode->size);
   if (stock < METADATA_SIZE + size)
@@ -90,8 +90,8 @@ t_metadata	*add_in_list(size_t size, t_metadata *list)
 t_metadata      *add_first(size_t size, t_metadata **list)
 {
   t_metadata    *tmp;
-  int           pages;
-  int           nb;
+  size_t	pages;
+  size_t	nb;
 
   pages = getpagesize();
   nb = (size + METADATA_SIZE) / pages;
