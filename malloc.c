@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Thu Jan 26 14:51:23 2017 voyevoda
-** Last update Tue Feb  7 20:53:58 2017 puilla_e
+** Last update Wed Feb  8 18:21:20 2017 puilla_e
 */
 
 #include <pthread.h>
@@ -17,6 +17,16 @@
 
 static t_metadata	*list = NULL;
 static pthread_mutex_t	mutex = PTHREAD_MUTEX_INITIALIZER;
+
+void	*calloc(size_t nmenb, size_t size)
+{
+  void	*tmp;
+
+  if ((tmp = malloc(size * nmenb)) == NULL)
+    return (NULL);
+  memset(tmp, 0, size * nmenb);
+  return (tmp);
+}
 
 void		*realloc(void *ptr, size_t size)
 {
@@ -88,15 +98,15 @@ void		free(void *ptr)
     tmp = merge_free(tmp->prev);
   if (tmp->next == NULL && tmp == list)
     {
-      sbrk(-(sbrk(0) - (void *) list));
+      sbrk_size((sbrk(0) - (void *) list) / pages, pages, -1);
       list = NULL;
     }
   else if (tmp->next == NULL && ((void *) tmp - (void *) list) / pages <
 	   (tmp->data + tmp->size - (void *) list) / pages)
     {
       tmp->prev->next = NULL;
-      sbrk((((void *)tmp - (void *)list) / pages + 1
-	    - (sbrk(0) - (void *)list) / pages) * pages);
+      sbrk_size(((void *)tmp - (void *)list) / pages + 1
+		- (sbrk(0) - (void *)list) / pages, pages, -1);
     }
   pthread_mutex_unlock(&mutex);
 }

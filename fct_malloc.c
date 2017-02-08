@@ -5,21 +5,40 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Fri Jan 27 16:49:24 2017 voyevoda
-** Last update Tue Feb  7 18:49:59 2017 puilla_e
+** Last update Wed Feb  8 18:22:09 2017 puilla_e
 */
 #include <string.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <stdint.h>
 #include "malloc.h"
 
-void	*calloc(size_t nmenb, size_t size)
+void *sbrk_size(size_t nb, size_t pages, int dir)
 {
-  void	*tmp;
+  size_t max;
+  void *ptr;
+  size_t mult;
 
-  if ((tmp = malloc(size * nmenb)) == NULL)
-    return (NULL);
-  memset(tmp, 0, size * nmenb);
-  return (tmp);
+  max = INTPTR_MAX / pages;
+  if (nb % max == 0)
+    {
+      if (max < nb)
+	mult = max;
+      else
+	mult = nb;
+    }
+  else
+    mult = nb % max;
+  if ((ptr = sbrk(pages * mult * dir)) == (void *)-1)
+    return ((void *)-1);
+  nb -= mult;
+  while (nb != 0)
+    {
+      if (sbrk(max * pages * dir) == (void *)-1)
+	return ((void *)-1);
+      nb -= max;
+    }
+  return (ptr);
 }
 
 void		set_mem(t_metadata *tmp, t_metadata *node)
@@ -51,7 +70,7 @@ static t_metadata	*add_last(size_t size, t_metadata *lastnode)
       nb = (size - stock + METADATA_SIZE) / pages;
       if ((size - stock + METADATA_SIZE) % pages != 0)
 	++nb;
-      if (sbrk(pages * nb) == (void *)-1)
+      if (sbrk_size(nb, pages, 1) == (void *)-1)
 	return (NULL);
     }
   tmp = lastnode->data + lastnode->size;
@@ -97,7 +116,7 @@ t_metadata      *add_first(size_t size, t_metadata **list)
   nb = (size + METADATA_SIZE) / pages;
   if ((size + METADATA_SIZE) % pages != 0)
     ++nb;
-  if ((tmp = sbrk(nb * pages)) == NULL)
+  if ((tmp = sbrk_size(nb, pages, 1)) == (void *)-1)
     return (NULL);
   tmp->next = NULL;
   tmp->prev = NULL;
