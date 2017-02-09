@@ -5,7 +5,7 @@
 ** Login   <puilla_e@epitech.net>
 **
 ** Started on  Fri Jan 27 12:26:11 2017 Edouard Puillandre
-// Last update Wed Feb  8 18:07:23 2017 puilla_e
+// Last update Thu Feb  9 16:14:13 2017 puilla_e
 */
 
 #ifndef MALLOC_H_
@@ -35,5 +35,11 @@ t_metadata      *add_first(size_t size, t_metadata **list);
 t_metadata      *merge_free(t_metadata *tmp);
 t_metadata	*ptr_to_metadata(void *ptr, t_metadata *list);
 void		*sbrk_size(size_t nb, size_t pagges, int dir);
+
+void		*malloc_mutex(size_t size);
+void		free_mutex(void *ptr);
+void		*realloc_mutex(void *ptr, size_t size);
+void		show_alloc_mem_mutex(void);
+void		*calloc_mutex(size_t nmenb, size_t size);
 
 # endif /* ! MALLOC_H_ */

@@ -5,7 +5,7 @@
 ** Login   <voyevoda@epitech.net>
 **
 ** Started on  Fri Jan 27 16:49:24 2017 voyevoda
-** Last update Wed Feb  8 18:22:09 2017 puilla_e
+** Last update Thu Feb  9 16:31:24 2017 puilla_e
 */
 #include <string.h>
 #include <pthread.h>
@@ -13,11 +13,11 @@
 #include <stdint.h>
 #include "malloc.h"
 
-void *sbrk_size(size_t nb, size_t pages, int dir)
+void		*sbrk_size(size_t nb, size_t pages, int dir)
 {
-  size_t max;
-  void *ptr;
-  size_t mult;
+  size_t	max;
+  void		*ptr;
+  size_t	mult;
 
   max = INTPTR_MAX / pages;
   if (nb % max == 0)

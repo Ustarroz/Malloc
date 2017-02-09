@@ -5,7 +5,7 @@
 ## Login   <puilla_e@epitech.net>
 ## 
 ## Started on  Mon Jan 30 13:49:30 2017 Edouard Puillandre
-## Last update Tue Feb  7 15:51:19 2017 puilla_e
+## Last update Thu Feb  9 16:14:42 2017 puilla_e
 ##
 
 CC	= gcc-6
@@ -22,7 +22,8 @@ LIBNAME	= libmy_malloc.so
 LIBSRC	= malloc.c \
 	  hexprinter.c \
 	  fct_malloc.c \
-	  fct_free.c
+	  fct_free.c	\
+	  fct_mutex.c
 
 LIBOBJ	= $(LIBSRC:.c=.o)
 
