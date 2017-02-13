@@ -5,17 +5,17 @@
 ## Login   <puilla_e@epitech.net>
 ## 
 ## Started on  Mon Jan 30 13:49:30 2017 Edouard Puillandre
-## Last update Thu Feb  9 16:14:42 2017 puilla_e
+## Last update Mon Feb 13 11:56:37 2017 ustarr_r
 ##
 
 CC	= gcc-6
 
 RM	= rm -f
 
-CFLAGS	+= -W -Wall -Wextra -Werror -fpic -g
+CFLAGS	+= -W -Wall -Wextra -Werror -fpic
 CFLAGS	+=
 
-LFLAGS	+= -pthread
+LFLAGS	+=
 
 LIBNAME	= libmy_malloc.so
 
